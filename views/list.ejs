@@ -1,0 +1,57 @@
+<%- include("header") -%>
+
+<section class="container">
+    <div class="sub_container" id="categories">
+    <div class="box" id="categoryHeading">
+        <h1>Categories</h1>
+        <button type="button" id="categoryBtn"><i class="fas fa-caret-square-down"></i></button>
+    </div>
+    <div class="categoryNames box hidden">
+        <div class="categoryName item">            
+        <h1><a href="/">Today</a></h1>        
+    </div>
+        <% listItemTitle.forEach(item => { %>
+        <form action="/deleteList" method="post">
+        <div class="categoryName item">            
+            <h1><a href="/<%= item.listName%>"><%= item.listName %></a></h1>
+            <button type="submit" name="listID" value=<%= item._id %> ><i class="delete-icon fas fa-calendar-times"></i></button>            
+        </div>
+        </form>
+        <% }); %>
+        <form class="item" action="/newList" method="post">
+            <input type="text" name="newToDoList" placeholder="New category" autocomplete="off" required>
+            <button type="submit" name="newList" value=<%= listTitle %>><i class="far fa-calendar-plus"></i></button>
+        </form>
+    </div>
+    </div>
+
+    <div class="sub_container" id="todoList">
+        <div class="box" id="heading">
+            <h1><%= listTitle %></h1>
+        </div>
+
+        <div class="box">
+            <!-- creating for loop, so it would go through the array and for evey  item 
+            it will create new list item (or whatever we want) with the value that user out inside -->
+
+            <% newList.forEach(item => { %>
+
+            <form action="/delete" method="post">
+                <div class="item">
+                    <input type="checkbox" name="checkbox" value="<%= item._id %>"onChange="this.form.submit()"></input>
+                    <p><%= item.name %></p>
+                    <!-- this creates a hidden input that we can use to assign different data value from the data base -->
+                    <!-- we need this to check name of the list we need to delete data from -->
+                    <input type="hidden" name="listName" value="<%= listTitle %>"onChange="this.form.submit()"></input>
+            </form>
+
+        </div>
+        <% }); %>
+        <form class="item" action="/" method="post">
+            <input type="text" name="newToDo" placeholder="Next to-do..." autocomplete="off" required>
+            <button type="submit" name="list" value=<%= listTitle %>><i class="far fa-calendar-plus"></i></button>
+        </form>
+    </div>
+</section>
+
+<%- include("footer") -%>
